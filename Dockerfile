@@ -29,8 +29,6 @@ EXPOSE 8000
 
 STOPSIGNAL SIGTERM
 
-RUN chmod -R 777 storage
-
 RUN chown -R www-data:www-data /var/lib/nginx
 RUN chmod -R 777 /var/lib/nginx
 
