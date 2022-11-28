@@ -20,10 +20,6 @@ COPY php/src/ /var/www/html/
 COPY php/conf.d/error_reporting.ini /usr/local/etc/php/conf.d/error_reporting.ini
 COPY php/conf.d/php.ini /usr/local/etc/php/php.ini
 
-RUN chown -R www-data:www-data \
-    /var/www/html/storage \
-    /var/www/html/bootstrap/cache
-
 #COPY php/conf.d/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN apk add supervisor
