@@ -47,4 +47,5 @@ RUN touch /var/log/supervisord.log && chown www-data:www-data /var/log/superviso
 
 RUN mkdir -p /var/log/php-fpm && chown www-data:www-data /var/log/php-fpm
 
+RUN rc-update add supervisord
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
