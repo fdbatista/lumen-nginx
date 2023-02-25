@@ -23,7 +23,7 @@ COPY php/conf.d/php.ini /usr/local/etc/php/php.ini
 #COPY php/conf.d/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN apk add supervisor
-COPY supervisor/supervisord.conf /etc/supervisord.conf
+COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 EXPOSE 8000
 
@@ -40,4 +40,4 @@ RUN touch /var/log/supervisord.log && chown www-data:www-data /var/log/superviso
 
 RUN mkdir -p /var/log/php-fpm && chown www-data:www-data /var/log/php-fpm
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
