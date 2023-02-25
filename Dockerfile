@@ -23,6 +23,7 @@ COPY php/conf.d/php.ini /usr/local/etc/php/php.ini
 #COPY php/conf.d/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN apk add supervisor
+RUN mkdir -p /etc/supervisor/conf.d/
 COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 EXPOSE 8000
