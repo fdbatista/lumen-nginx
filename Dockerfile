@@ -1,7 +1,7 @@
 FROM php:8.1.16-fpm-alpine
 
-RUN apk update && apk add --no-cache autoconf g++ make libmemcached-dev /
-    && pecl install memcached /
+RUN apk update && apk add --no-cache autoconf g++ make libmemcached-dev \
+    && pecl install memcached \
     && docker-php-ext-enable memcached
 
 RUN docker-php-ext-install mysqli pdo_mysql sockets
