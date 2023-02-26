@@ -41,17 +41,19 @@ RUN mkdir -p /var/log/nginx/
 RUN mkdir -p /var/log/supervisor/
 
 RUN touch /var/run/nginx.pid
-RUN touch /var/log/supervisor/supervisord.log
+RUN chown www-data:www-data /var/run/nginx.pid
 
-RUN rc-update add supervisord
+RUN touch /var/run/supervisord.pid
+RUN chown www-data:www-data /var/run/supervisord.pid
+
+RUN touch /var/log/supervisor/supervisord.log
 
 RUN chown -R www-data:www-data /var/log/
 RUN chmod -R 777 /var/log/
 
-RUN chown www-data:www-data /var/run/supervisord.pid
-RUN chown www-data:www-data /var/run/nginx.pid
 RUN chown -R www-data:www-data /var/lib/nginx
-
 RUN chmod -R 777 /var/lib/nginx
+
+RUN rc-update add supervisord
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
