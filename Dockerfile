@@ -47,8 +47,11 @@ RUN rc-update add supervisord
 
 RUN chown -R www-data:www-data /var/log/
 RUN chmod -R 777 /var/log/
+
+RUN chown www-data:www-data /var/run/supervisord.pid
 RUN chown www-data:www-data /var/run/nginx.pid
 RUN chown -R www-data:www-data /var/lib/nginx
+
 RUN chmod -R 777 /var/lib/nginx
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
