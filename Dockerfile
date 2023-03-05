@@ -61,4 +61,4 @@ RUN echo '*       *       *       *       *       php /var/www/html/artisan sche
 
 RUN rc-update add supervisord
 
-CMD ["crond && /usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD crond && /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
