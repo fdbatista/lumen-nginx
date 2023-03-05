@@ -1,8 +1,6 @@
-Run Lumen/Laravel 9 applications with PHP FPM and Nginx.
-Supervisor makes sure all services stay available.
+This repository is available at https://github.com/fdbatista/lumen-nginx .
 
-You can also make the built-in Supervisor take care of Laravel queue.
-
+Run stable Lumen/Laravel 9 applications with PHP 8.1.16 FPM, Nginx and Supervisor in a small-size alpine-based Docker image.
 Example:
 
 - Queue worker configuration on `./docker/supervisor/conf.d/queue-worker.conf`:
