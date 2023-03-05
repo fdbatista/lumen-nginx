@@ -54,6 +54,11 @@ RUN chmod -R 777 /var/log/
 RUN chown -R www-data:www-data /var/lib/nginx
 RUN chmod -R 777 /var/lib/nginx
 
+RUN mkdir -p /var/www/html/storage/
+RUN chown www-data:www-data /var/www/html/storage/
+
+RUN echo '*       *       *       *       *       php /var/www/html/artisan schedule:run' >> /var/spool/cron/crontabs/root
+
 RUN rc-update add supervisord
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["crond && /usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
