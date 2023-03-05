@@ -26,7 +26,7 @@ stderr_logfile_maxbytes=1MB
 stderr_logfile_backups=10
 ```
 
-Example Laravel/Lumen service on `docker-compose.yml`:
+- Laravel/Lumen service on `docker-compose.yml`:
 ```
 api:
     image: fdbatista/lumen-nginx:2.1
