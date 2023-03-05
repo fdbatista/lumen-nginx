@@ -1,6 +1,6 @@
 This repository is available at https://github.com/fdbatista/lumen-nginx .
 
-Run stable Lumen/Laravel 9 applications with PHP 8.1.16 FPM, Nginx and Supervisor in a small-size alpine-based Docker image.
+Run stable Lumen/Laravel 9 applications with PHP 8 FPM, Nginx and Supervisor in this alpine-based Docker image.
 
 Specially useful when you don't have enough privileges to install Supervisor.
 
