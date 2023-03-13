@@ -48,3 +48,31 @@ api:
       - rabbitmq
       - memcached
 ```
+For local development, using XDebug might be useful. The following `Dockerfile` installs and configures it for PHPStorm:
+
+```
+FROM fdbatista/lumen-nginx:2.1
+
+RUN  apk add --update linux-headers
+
+RUN apk add --no-cache $PHPIZE_DEPS \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
+COPY docker/php/conf.d/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/
+
+RUN chown -R www-data:www-data /var/www/html/
+
+CMD crond && /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+```
+Contents of `docker-php-ext-xdebug.ini`:
+```
+[xdebug]
+zend_extension=xdebug.so
+
+xdebug.log =/var/log/xdebug.log
+xdebug.mode=debug
+xdebug.client_host=host.docker.internal
+xdebug.client_port=9003
+xdebug.idekey=PHPSTORM
+```
