@@ -72,7 +72,7 @@ Contents of `docker-php-ext-xdebug.ini`:
 [xdebug]
 zend_extension=xdebug.so
 
-xdebug.log =/var/log/xdebug.log
+xdebug.log=/var/log/xdebug.log
 xdebug.mode=debug
 xdebug.client_host=host.docker.internal
 xdebug.client_port=9003
