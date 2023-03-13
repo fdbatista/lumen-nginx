@@ -111,10 +111,13 @@ api:
 **CONFIGURING PHPSTORM**
 
 - Make sure PHPStorm is expecting XDebug connections on port `9003`:
+
   ![debug-config.png](https://github.com/fdbatista/lumen-nginx/raw/master/img/debug-config.png)
 
-- Configure your server to receive connections on `localhost:8000`. Pay attention to the path mappings as well:
+- Configure your server to receive connections on `localhost:8000`. Pay attention to the path mappings as well: 
+
   ![server-config.png](https://github.com/fdbatista/lumen-nginx/raw/master/img/server-config.png)
 
 - Et voil&agrave;:
+
   ![breakpoint-hit.png](https://github.com/fdbatista/lumen-nginx/raw/master/img/breakpoint-hit.png)
