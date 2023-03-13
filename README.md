@@ -48,6 +48,7 @@ api:
       - rabbitmq
       - memcached
 ```
+
 For local development, using XDebug might be useful. The following `Dockerfile` installs and configures it for PHPStorm:
 
 ```
@@ -65,6 +66,7 @@ RUN chown -R www-data:www-data /var/www/html/
 
 CMD crond && /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
 ```
+
 Contents of `docker-php-ext-xdebug.ini`:
 ```
 [xdebug]
