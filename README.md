@@ -49,8 +49,10 @@ api:
       - memcached
 ```
 
-For local development, using XDebug might be useful. The following `Dockerfile` installs and configures it for PHPStorm:
+**LOCAL DEVELOPMENT WITH XDEBUG**
 
+For local development, using XDebug might be useful.
+The following `Dockerfile` installs and configures it for PHPStorm:
 ```
 FROM fdbatista/lumen-nginx:2.1
 
@@ -77,4 +79,31 @@ xdebug.mode=debug
 xdebug.client_host=host.docker.internal
 xdebug.client_port=9003
 xdebug.idekey=PHPSTORM
+```
+
+The Laravel/Lumen service specification in `docker-compose.yml` needs to be adjusted as follows -note the `build` and `extra_hosts` sections:
+```
+api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    extra_hosts:
+      host.docker.internal: host-gateway
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./:/var/www/html/
+      - ./docker/php/supervisor/conf.d/:/etc/supervisor/conf.d/
+    depends_on:
+      - db
+      - rabbitmq
+      - memcached
 ```
