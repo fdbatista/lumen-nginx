@@ -1,22 +1,21 @@
-FROM php:8.1.16-fpm-alpine
+FROM php:8.3.6-fpm
 
-ENV MEMCACHED_DEPS zlib-dev libmemcached-dev cyrus-sasl-dev
-RUN apk add --no-cache --update libmemcached-libs zlib openrc
-RUN set -xe \
-    && apk add --no-cache --update --virtual .phpize-deps $PHPIZE_DEPS \
-    && apk add --no-cache --update --virtual .memcached-deps $MEMCACHED_DEPS \
-    && pecl install memcached \
-    && echo "extension=memcached.so" > /usr/local/etc/php/conf.d/20_memcached.ini \
-    && rm -rf /usr/share/php8 \
-    && rm -rf /tmp/* \
-    && apk del .memcached-deps .phpize-deps
+RUN apt update
+
+RUN apt install -y gcc make autoconf libc-dev pkg-config
+RUN apt install -y zlib1g-dev
+RUN apt install -y libmemcached-dev
+RUN apt install -y libssl-dev
+RUN apt install -y cron
+
+RUN pecl install -f memcached
+RUN docker-php-ext-enable memcached
 
 RUN docker-php-ext-install mysqli pdo_mysql sockets
-RUN apk add --no-cache pcre-dev $PHPIZE_DEPS
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && chmod +x /usr/local/bin/composer
 
-RUN apk add nginx
+RUN apt install -y nginx
 
 COPY nginx/conf.d/ /etc/nginx/conf.d/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
@@ -26,9 +25,7 @@ COPY php/src/ /var/www/html/
 COPY php/conf.d/error_reporting.ini /usr/local/etc/php/conf.d/error_reporting.ini
 COPY php/conf.d/php.ini /usr/local/etc/php/php.ini
 
-#COPY php/conf.d/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-
-RUN apk add supervisor
+RUN apt install -y supervisor
 RUN mkdir -p /etc/supervisor/conf.d/
 COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
@@ -57,8 +54,12 @@ RUN chmod -R 777 /var/lib/nginx
 RUN mkdir -p /var/www/html/storage/
 RUN chown www-data:www-data /var/www/html/storage/
 
-RUN echo '*       *       *       *       *       php /var/www/html/artisan schedule:run' >> /var/spool/cron/crontabs/root
+COPY cron/artisan /var/spool/cron/crontabs/root
+RUN chown root:root /var/spool/cron/crontabs/root
+RUN chmod 644 /var/spool/cron/crontabs/root
 
-RUN rc-update add supervisord
+RUN apt install -y nano
 
-CMD crond && /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+RUN service cron restart
+
+CMD /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
