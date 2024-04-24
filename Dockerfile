@@ -2,21 +2,22 @@ FROM php:8.3.6-fpm
 
 RUN apt update
 
-RUN apt install -y gcc make autoconf libc-dev pkg-config
 RUN apt install -y zlib1g-dev
 RUN apt install -y libmemcached-dev
 RUN apt install -y libssl-dev
 RUN apt install -y cron
+RUN apt install -y nano
 
 RUN pecl install -f memcached
 RUN docker-php-ext-enable memcached
 
-RUN docker-php-ext-install mysqli pdo_mysql sockets
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install sockets
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && chmod +x /usr/local/bin/composer
 
 RUN apt install -y nginx
-
 COPY nginx/conf.d/ /etc/nginx/conf.d/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/proxy.conf /etc/nginx/proxy.conf
@@ -57,9 +58,6 @@ RUN chown www-data:www-data /var/www/html/storage/
 COPY cron/artisan /var/spool/cron/crontabs/root
 RUN chown root:root /var/spool/cron/crontabs/root
 RUN chmod 644 /var/spool/cron/crontabs/root
-
-RUN apt install -y nano
-
 RUN service cron restart
 
 CMD /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
